@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - Panier{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Panier</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Quantité commandée</th>
+                <th>Montant</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for panier in paniers %}
+                <tr>
+                    <td>{{panier.produit.nom}}</td>
+                    <td>{{panier.quantiteCommandee}}</td>
+                    <td>{{ (panier.produit.prix)*(panier.quantiteCommandee) }}</td>
+                    <td>
+                        <button type="button" class="btn btn-danger">
+                            <a href="{{path('supprimer_produit_du_panier', {'id':panier.produit.id})}}" class="text-light text-decoration-none">Supprimer ce produit de la base de données</a>
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p>
+        
+        {% set total_produits = 0 %}
+        {% for panier in paniers %}
+            {% set total_produits = total_produits + 1 %}
+        {% endfor %}
+
+        <span>- Nombre de produits présents dans le panier : </span><span>{{ total_produits }}</span>
+        <br />
+
+        <span>- Montant total du panier : </span><span>X</span>
+    </p>
+
+    <h2>Ajouter un produit au panier</h2>
+	{{form(formAjoutProduitDansPanier)}}
+
+</div>
+{% endblock %}
